@@ -1,0 +1,24 @@
+services:
+  trial-buddy:
+    restart: always
+    env_file:
+      - .env
+    environment:
+
+      ENVIRONMENT: ${ENVIRONMENT}
+      DATABASE_URI: ${DATABASE_URI}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
+      PAYPAL_BASE_URL: ${PAYPAL_BASE_URL}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES}
+      TOKEN_SECRET_KEY: ${TOKEN_SECRET_KEY}
+      TOKEN_ALGORITHM: ${TOKEN_ALGORITHM}
+
+
+      DATABASE_URI_LOCAL: ${DATABASE_URI_LOCAL}
+
+    build:
+        context: .
+        dockerfile: Dockerfile
+    ports:
+      - 8001:8080
