@@ -1,19 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-import { Sidebars } from '../components/Sidebars'
-import { NoficationCreate } from '../components/NoficationCreate'
+import { NoficationCreate } from '../components/NoficationCreate';
+import { Navbar } from '../components/Navbar';
 
 export const Home = () => {
   return (
     <div className="flex">
       <div className="flex">
-        <Sidebars />
+        <Navbar />
       </div>
       <div className="w-full">
         <NoficationCreate />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

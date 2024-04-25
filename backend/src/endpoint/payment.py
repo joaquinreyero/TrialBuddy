@@ -1,4 +1,6 @@
-from fastapi import Depends, status, APIRouter
+from fastapi import Depends, status, APIRouter, Request
+
+from src.service import payment
 
 router = APIRouter(
     prefix="/api/v1/payment",
@@ -7,9 +9,16 @@ router = APIRouter(
 
 
 @router.post("/orders")
-async def create_order(cart: dict):
+def create_order():
     """
-    Create an order on paypal.
+    Create an order on PayPal.
     """
-    print(idea)
-    return {"status": "ok"}
+    return payment.create_order()
+
+
+@router.post("/orders/{order_id}/capture")
+def capture_order(order_id: str):
+    """
+    Capture an order on PayPal.
+    """
+    return payment.capture_order(order_id)

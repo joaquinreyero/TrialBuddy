@@ -5,7 +5,7 @@ from datetime import datetime
 
 class SignInInput(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=8)
+    password: str = Field(min_length=8, max_length=30)
 
 
 class SignInOutput(BaseModel):
@@ -15,7 +15,7 @@ class SignInOutput(BaseModel):
 
 class SignUpInput(BaseModel):
     email: EmailStr
-    password: str = Field(min_length=8)
+    password: str = Field(min_length=8, max_length=30)
 
 
 class SignUpOutput(BaseModel):

@@ -1,13 +1,9 @@
-import React from 'react'
+import React from 'react';
+
+import { PayPalButton } from '../components/PayPalButton';
 
 export const Payment = () => {
-  return (
-    <div>
-        <h1>
-            payments
-        </h1>
-    </div>
-  )
-}
+  return <PayPalButton />;
+};
 
-export default Payment
+export default Payment;

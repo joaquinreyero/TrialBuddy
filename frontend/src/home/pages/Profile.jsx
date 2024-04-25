@@ -1,18 +1,18 @@
-import React from 'react'
+import React from 'react';
 
-import { Sidebars } from '../components/Sidebars'
+import { Navbar } from '../components/Navbar';
 
 export const Profile = () => {
   return (
     <div className="flex">
       <div className="flex">
-        <Sidebars />
+        <Navbar />
       </div>
       <div className="w-full">
         <h1>Hello</h1>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

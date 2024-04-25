@@ -1,9 +1,9 @@
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-
-import os
+from sqlalchemy.orm import sessionmaker
 
 from src.model.model import Base
 
