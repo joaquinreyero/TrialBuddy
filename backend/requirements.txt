@@ -13,3 +13,5 @@ cryptography
 jose
 python-dateutil
 httpx
+pytz
+fastapi_mail

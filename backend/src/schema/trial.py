@@ -1,9 +1,11 @@
 from pydantic import BaseModel, field_validator, Field, EmailStr
-from typing import Optional
+from typing import Optional, List
 from datetime import datetime
 
+from src.schema import notification
 
-class TrialInput(BaseModel):
+
+class Request(BaseModel):
     user_id: int
     trial: str = Field(min_length=3, max_length=50)
     email: Optional[EmailStr] = None
@@ -37,10 +39,20 @@ class TrialInput(BaseModel):
         hour, minute = time_to_send.split(':')
         hour = int(hour)
         minute = int(minute)
-        expiry_date = expiry_date.replace(hour=hour, minute=minute, second=0, microsecond=0)
+        expiry_date = expiry_date.replace(hour=hour, minute=minute, second=0)
         return expiry_date
 
     def __init__(self, **data):
         super().__init__(**data)
         self.expiry_date = self.set_expiry_date(self.time_to_send, self.expiry_date)
 
+    class Config:
+        orm_mode = True
+
+
+class RequestList(BaseModel):
+    requests: List[Request]
+
+
+class Response(Request):
+    notifications: list[notification.Response]

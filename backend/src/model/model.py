@@ -51,7 +51,7 @@ class TrialNotification(Base, IdTimeStampIsActiveMixin):
         self.url = url
         self.time_to_send = time_to_send
         self.when_to_send = when_to_send
-        self.expiry_date = expiry_date.replace(second=0, microsecond=0)
+        self.expiry_date = expiry_date.replace(second=0)
 
 
 class Notification(Base, IdTimeStampIsActiveMixin):
@@ -59,9 +59,9 @@ class Notification(Base, IdTimeStampIsActiveMixin):
 
     trial_notification_id = Column(Integer, ForeignKey('trial_notification.id'))
 
-    notification_date = Column(String, nullable=False)
+    notification_date = Column(DateTime, nullable=False)
 
     def __init__(self, trial_notification_id, notification_date):
         self.trial_notification_id = trial_notification_id
-        self.notification_date = notification_date.replace(second=0, microsecond=0)
+        self.notification_date = notification_date.replace(second=0)
 

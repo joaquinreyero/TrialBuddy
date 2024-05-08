@@ -2,18 +2,25 @@ FROM python:3.11-alpine
 
 WORKDIR .
 
+RUN apk --no-cache add dcron curl nano
+
 COPY requirements.txt .
 
-RUN set -eux \
-    && apk add --no-cache --virtual .build-deps build-base \
-    && python -m pip install --upgrade pip \
-    && pip install -r requirements.txt \
-    && apk del .build-deps \
-    && rm -rf /var/cache/apk/* \
-    && rm -rf requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
+COPY job.sh /job.sh
+RUN chmod +x /job.sh
+
+COPY cronjob /etc/crontabs/root
+RUN chmod 0644 /etc/crontabs/root && \
+    crontab /etc/crontabs/root && \
+    touch /var/log/cron.log
+
 EXPOSE 8080
 
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080"]
+COPY start.sh /usr/local/bin/start.sh
+RUN chmod +x /usr/local/bin/start.sh
+
+CMD ["/usr/local/bin/start.sh"]

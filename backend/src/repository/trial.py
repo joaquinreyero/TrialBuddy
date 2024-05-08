@@ -1,17 +1,31 @@
 from sqlalchemy.exc import SQLAlchemyError
 
-from dateutil.relativedelta import relativedelta
+from datetime import datetime
 
 from src.config import configure_database
 from src.model import model
 from src.schema import trial as schema
+from src.repository.notification import NotificationRepository
 
-from datetime import datetime
+from typing import List
+
 
 class TrialRepository:
 
     @staticmethod
-    def create(trial: schema.TrialInput):
+    def create(trial: schema.Request) -> model.TrialNotification:
+        """
+        Create a new trial notification and the associated notifications.
+
+        Args:
+            trial (schema.TrialInput): The trial information.
+
+        Returns:
+            model.TrialNotification: The newly created trial notification.
+
+        Raises:
+            SQLAlchemyError: If an error occurs during database operations.
+        """
         db = configure_database()
         try:
             new_trial = model.TrialNotification(
@@ -29,97 +43,41 @@ class TrialRepository:
             db.commit()
             db.refresh(new_trial)
 
-            if trial.when_to_send == 'all':
-                new_week_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(weeks=1)
-                )
-                db.add(new_week_notification)
-                new_three_days_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(days=3)
-                )
-                db.add(new_three_days_notification)
-                new_day_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(days=1)
-                )
-                db.add(new_day_notification)
-            elif trial.when_to_send == 'one-week':
-                new_week_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(weeks=1)
-                )
-                db.add(new_week_notification)
-            elif trial.when_to_send == 'three-days':
-                new_three_days_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(days=3)
-                )
-                db.add(new_three_days_notification)
-            elif trial.when_to_send == 'one-day':
-                new_day_notification = model.Notification(
-                    trial_notification_id=new_trial.id,
-                    notification_date=trial.expiry_date - relativedelta(days=1)
-                )
-                db.add(new_day_notification)
-            db.commit()
+            NotificationRepository.create_notifications(new_trial.id, trial.when_to_send,
+                                                        trial.expiry_date)
+
             return new_trial
+
         except SQLAlchemyError as e:
             db.rollback()
             raise e
 
-    def create_notifications(self, db, when_to_send: str, trial_id: int, expiry_date: datetime):
-        if when_to_send == 'all':
-            new_week_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(weeks=1)
-            )
-            db.add(new_week_notification)
-            new_three_days_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(days=3)
-            )
-            db.add(new_three_days_notification)
-            new_day_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(days=1)
-            )
-            db.add(new_day_notification)
-        elif when_to_send == 'one-week':
-            new_week_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(weeks=1)
-            )
-            db.add(new_week_notification)
-        elif when_to_send == 'three-days':
-            new_three_days_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(days=3)
-            )
-            db.add(new_three_days_notification)
-        elif when_to_send == 'one-day':
-            new_day_notification = model.Notification(
-                trial_notification_id=trial_id,
-                notification_date=expiry_date - relativedelta(days=1)
-            )
-            db.add(new_day_notification)
-        return db
-
     @staticmethod
-    def get_by_id(trial_id: int):
+    def get_trials(date: datetime) -> List[model.TrialNotification]:
+        """
+        Get all trials that have notification_date equal to the date of Args
+
+        Args:
+            date: date to compare against expiry date
+
+        Returns:
+            list: A list of all trials.
+
+        Raises:
+            SQLAlchemyError: If an error occurs during database operations.
+        """
         db = configure_database()
         try:
-            trial = db.query(model.TrialNotification).filter(model.TrialNotification.id == trial_id).first()
-            return trial
-        except SQLAlchemyError as e:
-            raise e
+            trials_notification = []
+            notifications = db.query(model.Notification).filter(
+                model.Notification.notification_date == date).all()
+            if notifications:
+                for notification in notifications:
+                    trial_notification = db.query(model.TrialNotification).filter(
+                        model.TrialNotification.id == notification.trial_notification_id).first()
+                    if trial_notification:
+                        trials_notification.append(trial_notification)
+            return trials_notification
 
-    @staticmethod
-    def get_by_user_id(user_id: int):
-        db = configure_database()
-        try:
-            trials = db.query(model.TrialNotification).filter(model.TrialNotification.user_id == user_id).all()
-            return trials
         except SQLAlchemyError as e:
             raise e

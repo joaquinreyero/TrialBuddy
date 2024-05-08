@@ -10,25 +10,10 @@ router = APIRouter(
 
 
 @router.post("/")
-def create(trial: schema.TrialInput):
+def create(trial: schema.Request):
     """
     Create a trial notification.
     """
-    service.create(trial)
-    return {"message": "Trial created successfully."}
+    return service.create(trial)
 
 
-@router.get("/{trial_id}")
-def get_by_id(trial_id: int):
-    """
-    Get trial by id.
-    """
-    return service.get_by_id(trial_id)
-
-
-@router.get("/{user_id}")
-def get_by_user_id(user_id: int):
-    """
-    Get trial by user id.
-    """
-    return service.get_by_user_id(user_id)

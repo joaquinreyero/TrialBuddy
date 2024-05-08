@@ -1,5 +1,7 @@
 from fastapi import Depends, status, APIRouter
 
+from datetime import datetime
+
 from src.service import notification as service
 
 router = APIRouter(
@@ -9,8 +11,8 @@ router = APIRouter(
 
 
 @router.get("/notificate")
-def notificate():
-    service.notificate()
+async def notificate(date: datetime):
+    await service.notificate(date)
 
 
 @router.get("/confirm/{trial_id}")

@@ -1,36 +1,15 @@
-from src.utils import errors
-from src.schema import trial as schema
 from src.repository import trial as trial_repository
 
+from src.schema import trial as trial_schema
 
-def create(trial: schema.TrialInput):
+
+def create(trial: trial_schema.Request):
     """
     Sign up a user.
     """
     try:
         repository = trial_repository.TrialRepository()
-        return repository.create(trial)
-    except Exception as e:
-        raise e
-
-
-def get_by_id(trial_id: int):
-    """
-    Get trial by id.
-    """
-    try:
-        repository = trial_repository.TrialRepository()
-        return repository.get_by_id(trial_id)
-    except Exception as e:
-        raise e
-
-
-def get_by_user_id(user_id: int):
-    """
-    Get trial by user id.
-    """
-    try:
-        repository = trial_repository.TrialRepository()
-        return repository.get_by_user_id(user_id)
+        response = repository.create(trial)
+        return response
     except Exception as e:
         raise e
