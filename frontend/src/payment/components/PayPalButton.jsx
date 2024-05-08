@@ -2,6 +2,9 @@ import React, { useEffect } from 'react';
 import axios from 'axios';
 
 export const PayPalButton = () => {
+  useEffect(() => {
+    renderPaypalButton();
+  }, []);
   function renderPaypalButton() {
     paypal
       .Buttons({
@@ -93,9 +96,6 @@ export const PayPalButton = () => {
     const container = document.querySelector('#result-message');
     container.innerHTML = message;
   }
-  useEffect(() => {
-    renderPaypalButton();
-  }, []);
   return <div id="paypal-button-container"></div>;
 };
 
