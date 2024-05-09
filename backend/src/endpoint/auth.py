@@ -23,3 +23,11 @@ def sign_in(user: schema.SignInInput):
     Sign in a user.
     """
     return service.sign_in(user)
+
+
+@router.post("/")
+def authenticate(user: schema.AuthenticateInput):
+    """
+    Authenticate a user.
+    """
+    return service.authenticate(user)

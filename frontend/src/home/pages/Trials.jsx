@@ -1,16 +1,16 @@
 import React from 'react';
 
 import { HomeLayout } from '../layout/HomeLayout';
-import { TrialCreation } from '../components/trialCreation/TrialCreation';
+import { TrialList } from '../components/TrialList';
 
-export const Home = () => {
+export const Trials = () => {
   return (
     <HomeLayout>
       <>
-        <TrialCreation />
+        <TrialList />
       </>
     </HomeLayout>
   );
 };
 
-export default Home;
+export default Trials;

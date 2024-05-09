@@ -17,3 +17,9 @@ def create(trial: schema.Request):
     return service.create(trial)
 
 
+@router.get("/{user_id}")
+def get_by_user(user_id: int):
+    """
+    Get all active trials for a user.
+    """
+    return service.get_by_user(user_id)

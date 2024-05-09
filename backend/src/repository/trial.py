@@ -81,3 +81,28 @@ class TrialRepository:
 
         except SQLAlchemyError as e:
             raise e
+
+    @staticmethod
+    def get_by_user(user_id: int) -> List[model.TrialNotification]:
+        """
+        Get all active trials for a user.
+
+        Args:
+            user_id (int): The ID of the user.
+
+        Returns:
+            list: A list of all trials for the user.
+
+        Raises:
+            SQLAlchemyError: If an error occurs during database operations.
+        """
+        db = configure_database()
+        try:
+            trials = db.query(model.TrialNotification).filter(
+                model.TrialNotification.user_id == user_id,
+                model.TrialNotification.is_active == True
+            ).all()
+            return trials
+
+        except SQLAlchemyError as e:
+            raise e

@@ -13,3 +13,15 @@ def create(trial: trial_schema.Request):
         return response
     except Exception as e:
         raise e
+
+
+def get_by_user(user_id: int):
+    """
+    Get all active trials for a user.
+    """
+    try:
+        repository = trial_repository.TrialRepository()
+        response = repository.get_by_user(user_id)
+        return response
+    except Exception as e:
+        raise e

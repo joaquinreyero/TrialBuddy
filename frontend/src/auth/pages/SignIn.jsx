@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const setCookie = (name, value, days) => {
@@ -10,6 +11,7 @@ const setCookie = (name, value, days) => {
 };
 
 export const SignIn = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -18,7 +20,7 @@ export const SignIn = () => {
 
     try {
       const response = await axios.post(
-        'https://backend-5wumll7gxq-ue.a.run.app/api/v1/auth/sign-in',
+        'http://localhost:8001/api/v1/auth/sign-in',
         {
           email: email,
           password: password,
@@ -27,6 +29,7 @@ export const SignIn = () => {
       console.log('Response:', response.data);
       setCookie('token', response.data.token, 1 / 24);
       setCookie('user_id', response.data.id, 1 / 24);
+      navigate('/home');
     } catch (error) {
       console.error('Error:', error);
     }
@@ -34,14 +37,14 @@ export const SignIn = () => {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 tracking-widest">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img
             className="mx-auto h-10 w-auto"
             src="https://img.icons8.com/nolan/64/appointment-reminders.png"
             alt="Trial Buddy"
           />
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+          <h2 className="mt-10 text-center text-2xl leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
         </div>
@@ -80,7 +83,7 @@ export const SignIn = () => {
                 <div className="text-sm">
                   <a
                     href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    className=" text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
                   </a>
@@ -103,7 +106,7 @@ export const SignIn = () => {
             <div>
               <button
                 type="submit"
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm  leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Sign in
               </button>
@@ -114,7 +117,7 @@ export const SignIn = () => {
             Not a member?{' '}
             <a
               href="/signup"
-              className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+              className="leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Get started now
             </a>

@@ -36,7 +36,7 @@ class TrialNotification(Base, IdTimeStampIsActiveMixin):
 
     trial = Column(String, nullable=False)
     email = Column(String, nullable=True)
-    phone = Column(Integer, nullable=True)
+    phone = Column(String, nullable=True)
     message = Column(String, nullable=True)
     url = Column(String, nullable=True)
     time_to_send = Column(String, nullable=False)

@@ -9,7 +9,7 @@ class Request(BaseModel):
     user_id: int
     trial: str = Field(min_length=3, max_length=50)
     email: Optional[EmailStr] = None
-    phone: Optional[int] = None
+    phone: Optional[str] = None
     message: Optional[str] = Field(min_length=3, max_length=100)
     url: Optional[str] = Field(min_length=3, max_length=100)
     time_to_send: str

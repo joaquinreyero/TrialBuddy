@@ -1,7 +1,8 @@
-from src.utils.auth import hash_password, create_access_token, verify
+from src.utils.auth import hash_password, create_access_token, verify, verify_token
 from src.utils import errors
 from src.schema import auth as schema
 from src.repository import auth as auth_repository
+from src.repository import payment as payment_repository
 
 
 def sign_up(sign_up_input: schema.SignUpInput):
@@ -43,5 +44,23 @@ def sign_in(sign_in_input: schema.SignInInput):
             id=user.id,
         )
         return sign_in_response
+    except Exception as e:
+        raise e
+
+
+def authenticate(authenticate_input: schema.AuthenticateInput):
+    """
+    Authenticate a user.
+    """
+    try:
+        repository = auth_repository.AuthRepository()
+        token = repository.token_exist(authenticate_input.token)
+        if token.is_active is False:
+            raise errors.BadRequest("Token is not active.")
+        has_paid = repository.has_paid(token.user_id)
+        if has_paid is False:
+            raise errors.BadRequest("User has not paid.")
+        else:
+            return verify_token(authenticate_input.token)
     except Exception as e:
         raise e

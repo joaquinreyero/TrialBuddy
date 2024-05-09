@@ -34,3 +34,7 @@ class TokenData(BaseModel):
     expiration_date: Optional[datetime] = None
     is_active: Optional[bool] = None
     user_id: Optional[int] = None
+
+
+class AuthenticateInput(BaseModel):
+    token: str

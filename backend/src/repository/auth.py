@@ -73,6 +73,20 @@ class AuthRepository:
             raise e
 
     @staticmethod
+    def token_exist(token: str):
+        db = configure_database()
+        try:
+            token = db.query(model.Token).filter(model.Token.token == token).first()
+            return schema.TokenData(
+                token=token.token,
+                expiration_date=token.expiration_date,
+                is_active=token.is_active,
+                user_id=token.user_id,
+            ) if token else None
+        except SQLAlchemyError as e:
+            raise e
+
+    @staticmethod
     def token_update(token: schema.TokenData):
         db = configure_database()
         try:
@@ -101,4 +115,16 @@ class AuthRepository:
             db.commit()
         except SQLAlchemyError as e:
             db.rollback()
+            raise e
+
+    @staticmethod
+    def has_paid(user_id: int):
+        db = configure_database()
+        try:
+            user = db.query(model.Users).filter(model.Users.id == user_id).first()
+            if user:
+                return user.has_paid
+            else:
+                return "User has not paid."
+        except SQLAlchemyError as e:
             raise e

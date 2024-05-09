@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export const PayPalButton = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     renderPaypalButton();
   }, []);
@@ -81,6 +83,7 @@ export const PayPalButton = () => {
                 orderData,
                 JSON.stringify(orderData, null, 2),
               );
+              navigate('/home');
             }
           } catch (error) {
             console.error(error);

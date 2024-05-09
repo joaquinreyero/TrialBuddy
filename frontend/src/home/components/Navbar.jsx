@@ -2,155 +2,70 @@ import React, { useState } from 'react';
 import { Dialog } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 
-const navigation = [
-  { name: 'Notifications', href: '#', action: 'product' },
-  { name: 'Profile', href: '#', action: 'product' },
-  { name: 'Feedback', href: '#', action: 'contact' },
-];
-
-export const Navbar = ({
-  scrollToProduct,
-  scrollToPricing,
-  scrollToContact,
-}) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const handleNavigation = (action) => {
-    switch (action) {
-      case 'product':
-        scrollToProduct();
-        break;
-      case 'pricing':
-        scrollToPricing();
-        break;
-      case 'contact':
-        scrollToContact();
-        break;
-      default:
-        break;
-    }
-    setMobileMenuOpen(false);
-  };
+export const Navbar = () => {
+  const [open, setOpen] = useState(true);
 
   return (
-    <div>
-      <div className="bg-white">
-        <header className="absolute inset-x-0 top-0 z-50">
-          <nav
-            className="flex items-center justify-between p-6 lg:px-8"
-            aria-label="Global"
-          >
-            <div className="flex lg:flex-1">
-              <a href="/home" className="-m-1.5 p-1.5">
-                <span className="sr-only">Trial Buddy</span>
-                <img
-                  className="h-8 w-auto"
-                  src="https://img.icons8.com/nolan/64/appointment-reminders.png"
-                  alt="trail buddy"
-                />
-              </a>
-              <p className="ml-2 text-2xl font-semibold whitespace-nowrap text-gray-800">
-                TrialBuddy
-              </p>
-            </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(true)}
+    <>
+      <div className="antialiased  max-w-screen-xl px-4 py-12 mx-auto space-y-8 overflow-hidden sm:px-6 lg:px-8">
+        <div className="w-full text-gray-700 bg-white ">
+          <div className="flex flex-col max-w-screen-xl px-4 mx-auto md:items-center md:justify-between md:flex-row md:px-6 lg:px-8">
+            <div className="flex flex-row items-center justify-between p-4">
+              <a
+                href="#"
+                className="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline"
               >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                TRIAL BUDDY
+              </a>
+              <button
+                className="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
+                onClick={() => setOpen(!open)}
+              >
+                <svg
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  className="w-6 h-6"
+                >
+                  <path
+                    style={{ display: !open ? 'block' : 'none' }}
+                    fillRule="evenodd"
+                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
+                    clipRule="evenodd"
+                  ></path>
+                  <path
+                    style={{ display: open ? 'block' : 'none' }}
+                    fillRule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
               </button>
             </div>
-            <div className="hidden lg:flex lg:gap-x-12">
-              {navigation.map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => handleNavigation(item.action)}
-                  className="text-sm font-semibold leading-6 text-gray-900"
-                >
-                  {item.name}
-                </button>
-              ))}
-            </div>
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <nav
+              className={`flex-col flex-grow pb-4 md:pb-0 md:flex md:justify-end md:flex-row ${
+                open ? 'flex' : 'hidden'
+              }`}
+            >
               <a
-                href="/SignIn"
-                className="text-sm font-semibold leading-6 text-gray-900"
+                href="/trials"
+                className="px-4 py-2 mt-2 text-md md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900  focus:outline-none focus:shadow-outline"
               >
-                Log out <span aria-hidden="true">&rarr;</span>
+                My trials
               </a>
-            </div>
-          </nav>
-          <Dialog
-            as="div"
-            className="lg:hidden"
-            open={mobileMenuOpen}
-            onClose={setMobileMenuOpen}
-          >
-            <div className="fixed inset-0 z-50" />
-            <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-              <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
-                  <span className="sr-only">Trial Buddy</span>
-                  <img
-                    className="h-8 w-auto"
-                    src="https://img.icons8.com/nolan/64/appointment-reminders.png"
-                    alt="trail buddy"
-                  />
-                </a>
-                <button
-                  type="button"
-                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <span className="sr-only">Close menu</span>
-                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <button
-                        key={item.name}
-                        onClick={() => handleNavigation(item.action)}
-                        className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                      >
-                        {item.name}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="py-6">
-                    <button
-                      onClick={() => handleNavigation('contact')}
-                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                    >
-                      Log out
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </Dialog.Panel>
-          </Dialog>
-        </header>
-      </div>
-      <div className="relative isolate px-6 pt-14 lg:px-8">
-        <div
-          className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
-          aria-hidden="true"
-        >
-          <div
-            className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
-            style={{
-              clipPath:
-                'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
-            }}
-          />
+              <a
+                href="/profile"
+                className="px-4 py-2 mt-2 text-md md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900  focus:outline-none focus:shadow-outline"
+              >
+                Profile
+              </a>
+              <a className="px-4 py-2 mt-2 text-md md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900  focus:outline-none focus:shadow-outline">
+                Log out
+              </a>
+            </nav>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
