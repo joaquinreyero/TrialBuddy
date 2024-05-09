@@ -9,11 +9,11 @@ router = APIRouter(
 
 
 @router.post("/orders")
-def create_order():
+def create_order(user_id: int):
     """
     Create an order on PayPal.
     """
-    return payment.create_order()
+    return payment.create_order(user_id)
 
 
 @router.post("/orders/{order_id}/capture")

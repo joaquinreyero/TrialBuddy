@@ -10,7 +10,7 @@ class SignInInput(BaseModel):
 
 class SignInOutput(BaseModel):
     token: str
-    email: str
+    id: int
 
 
 class SignUpInput(BaseModel):

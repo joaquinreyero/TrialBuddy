@@ -40,7 +40,7 @@ def sign_in(sign_in_input: schema.SignInInput):
         token = repository.token_create(create_access_token(user.id))
         sign_in_response = schema.SignInOutput(
             token=token.token,
-            email=user.email,
+            id=user.id,
         )
         return sign_in_response
     except Exception as e:

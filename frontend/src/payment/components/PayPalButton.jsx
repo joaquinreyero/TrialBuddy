@@ -11,7 +11,7 @@ export const PayPalButton = () => {
         createOrder: async () => {
           try {
             const response = await axios({
-              url: 'http://localhost:8001/api/v1/payment/orders',
+              url: 'http://localhost:8001/api/v1/payment/orders?user_id=1',
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',

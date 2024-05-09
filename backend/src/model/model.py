@@ -17,6 +17,7 @@ class Users(Base, IdTimeStampIsActiveMixin):
 
     email = Column(String(100), nullable=False, unique=True)
     password = Column(String(100), nullable=False)
+    has_paid = Column(Boolean, default=False)
 
 
 class Token(Base, IdTimeStampIsActiveMixin):
@@ -65,3 +66,58 @@ class Notification(Base, IdTimeStampIsActiveMixin):
         self.trial_notification_id = trial_notification_id
         self.notification_date = notification_date.replace(second=0)
 
+
+class Payment(Base, IdTimeStampIsActiveMixin):
+    __tablename__ = 'payment'
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    status = Column(String)
+
+    payment_email = Column(String)
+    payment_account_id = Column(String)
+    payment_account_status = Column(String)
+    payment_given_name = Column(String)
+    payment_surname = Column(String)
+    payment_country_code = Column(String)
+
+    unit_reference_id = Column(String)
+    shipping_full_name = Column(String)
+    shipping_address_line_1 = Column(String)
+    shipping_admin_area_2 = Column(String)
+    shipping_admin_area_1 = Column(String)
+    shipping_postal_code = Column(String)
+    shipping_country_code = Column(String)
+
+    payment_capture_id = Column(String)
+    payment_capture_status = Column(String)
+    payment_capture_amount_value = Column(String)
+    payment_capture_currency_code = Column(String)
+    payment_capture_final = Column(Boolean)
+    payment_capture_seller_protection_status = Column(String)
+    payment_capture_dispute_categories = Column(String)
+    payment_capture_gross_amount_value = Column(String)
+    payment_capture_paypal_fee_value = Column(String)
+    payment_capture_net_amount_value = Column(String)
+    payment_capture_self_link = Column(String)
+    payment_capture_refund_link = Column(String)
+    payment_capture_up_link = Column(String)
+    payment_capture_create_time = Column(DateTime)
+    payment_capture_update_time = Column(DateTime)
+
+    payer_given_name = Column(String)
+    payer_surname = Column(String)
+    payer_email = Column(String)
+    payer_id = Column(String)
+    payer_country_code = Column(String)
+
+    order_self_link = Column(String)
+    order_method = Column(String)
+
+
+class Order(Base, IdTimeStampIsActiveMixin):
+    __tablename__ = 'order'
+
+    user_id = Column(Integer, ForeignKey('users.id'))
+
+    order_id = Column(String)
